@@ -1,4 +1,4 @@
-const { admin, MAIN_FEATURED_POST, MFP_DOC } = require("./admin");
+const { admin } = require("./admin");
 const { MAIN_FEATURED_POST, MFP_DOC } = require("./adminConstants");
 const db = admin.firestore();
 
