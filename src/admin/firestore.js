@@ -2,7 +2,7 @@ const { admin } = require("./admin");
 const {
 	MAIN_FEATURED_POST,
 	MFP_DOC,
-	FEATURED_POST,
+	FEATURED_POSTS,
 } = require("./adminConstants");
 const db = admin.firestore();
 
@@ -24,17 +24,16 @@ const updateMainFeaturedPost = async (post) => {
 };
 
 const updateFeaturedPosts = async (post, index) => {
-	const featPostRef = db.collection(FEATURED_POST).doc(`${index}`);
+	const featPostRef = db.collection(FEATURED_POSTS).doc(post.date);
 
 	if (post) {
 		post.index = index;
-		post.type = "recent";
 		await featPostRef
 			.set(post)
-			.then(() => console.log("Done uploading post"))
-			.catch((e) => console.log("featuredPost update error", e));
+			.then(() => console.log("Done uploading post ::", index))
+			.catch((e) => console.log("featuredPost update error", index, e));
 	} else {
-		console.log("Failed to upload post");
+		console.log("Failed to upload post :: post undefined", index);
 	}
 };
 

@@ -2,7 +2,7 @@ import { db } from "./firebase";
 
 const {
 	MAIN_FEATURED_POST,
-	FEATURED_POST,
+	FEATURED_POSTS,
 } = require("../admin/adminConstants");
 
 export const mainFeaturedPostQuery = db
@@ -10,5 +10,6 @@ export const mainFeaturedPostQuery = db
 	.where("type", "==", "default");
 
 export const featuredPostQuery = db
-	.collection(FEATURED_POST)
-	.where("type", "==", "recent");
+	.collection(FEATURED_POSTS)
+	.orderBy("index")
+	.startAt(0);
