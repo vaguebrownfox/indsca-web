@@ -15,6 +15,7 @@ import {
 	headerTag,
 } from "./components/constants/headerSections";
 import Footer from "./components/pieces/Footer";
+import About from "./components/pages/About";
 
 const App = () => {
 	return (
@@ -28,6 +29,7 @@ const App = () => {
 					/>
 					<Switch>
 						<Route path="/" exact component={Home} />
+						<Route path="/about" exact component={About} />
 					</Switch>
 					<Footer title={headerTag} description={headerTitle} />
 				</Container>
