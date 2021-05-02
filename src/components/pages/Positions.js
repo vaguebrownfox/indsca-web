@@ -5,7 +5,7 @@ import { positionQuery } from "../../firebase/firestore";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Grid, CardActions, CardMedia, Avatar } from "@material-ui/core";
+import { Paper, Grid, CardActions, Avatar } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";

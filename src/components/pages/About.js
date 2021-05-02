@@ -40,7 +40,11 @@ const About = () => {
 	return (
 		<div>
 			<Paper className={classes.paper}>
-				<img className={classes.logo} src={"/logo/icon_512.png"} />
+				<img
+					className={classes.logo}
+					src={"/logo/icon_512.png"}
+					alt={"IndSCA logo"}
+				/>
 				<Typography variant="h4" component="div">
 					About IndSCA
 				</Typography>
