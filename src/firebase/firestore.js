@@ -4,6 +4,7 @@ const {
 	MAIN_FEATURED_POST,
 	FEATURED_POSTS,
 	HOME_CONTENT,
+	POSITION_INFO,
 } = require("../admin/adminConstants");
 
 export const mainFeaturedPostQuery = db
@@ -17,5 +18,10 @@ export const featuredPostQuery = db
 
 export const contentQuery = db
 	.collection(HOME_CONTENT)
+	.orderBy("index")
+	.startAt(0);
+
+export const positionQuery = db
+	.collection(POSITION_INFO)
 	.orderBy("index")
 	.startAt(0);

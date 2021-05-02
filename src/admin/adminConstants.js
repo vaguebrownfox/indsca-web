@@ -7,6 +7,7 @@ exports.DATABASE_URL = "https://indsca-prod.firebaseio.com";
 exports.MAIN_FEATURED_POST = "mainFeaturedPost";
 exports.FEATURED_POSTS = "featuredPosts";
 exports.HOME_CONTENT = "homeContent";
+exports.POSITION_INFO = "positionInfo";
 
 //// doc
 exports.MFP_DOC = "default";

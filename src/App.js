@@ -7,6 +7,9 @@ import Container from "@material-ui/core/Container";
 // Pages
 import Home from "./components/pages/Home";
 import Header from "./components/pieces/Header";
+import Footer from "./components/pieces/Footer";
+import About from "./components/pages/About";
+import Positions from "./components/pages/Positions";
 
 // UI Constants
 import {
@@ -14,8 +17,6 @@ import {
 	headerTitle,
 	headerTag,
 } from "./components/constants/headerSections";
-import Footer from "./components/pieces/Footer";
-import About from "./components/pages/About";
 
 const App = () => {
 	return (
@@ -30,9 +31,10 @@ const App = () => {
 					<Switch>
 						<Route path="/" exact component={Home} />
 						<Route path="/about" exact component={About} />
+						<Route path="/positions" exact component={Positions} />
 					</Switch>
-					<Footer title={headerTag} description={headerTitle} />
 				</Container>
+				<Footer title={headerTag} description={headerTitle} />
 			</Router>
 			<div></div>
 		</>
