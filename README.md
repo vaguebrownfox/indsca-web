@@ -9,3 +9,7 @@ A Committee formed with distinguished faculty members from different institution
 #### January 31, 2021 by [Jeevan K](https://github.com/vaguebrownfox/)
 
 #### [Project Assistant, SPIRE Lab, IISc, Bangalore] -->
+
+#### logs
+
+-   indsca00 - initial codebase setup
