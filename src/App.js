@@ -12,17 +12,24 @@ import Header from "./components/pieces/Header";
 import {
 	headerSections,
 	headerTitle,
+	headerTag,
 } from "./components/constants/headerSections";
+import Footer from "./components/pieces/Footer";
 
 const App = () => {
 	return (
 		<>
 			<Router>
 				<Container maxWidth="lg">
-					<Header title={headerTitle} sections={headerSections} />
+					<Header
+						tag={headerTag}
+						title={headerTitle}
+						sections={headerSections}
+					/>
 					<Switch>
 						<Route path="/" exact component={Home} />
 					</Switch>
+					<Footer title={headerTag} description={headerTitle} />
 				</Container>
 			</Router>
 			<div></div>

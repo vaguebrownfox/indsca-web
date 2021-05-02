@@ -9,3 +9,5 @@ export const headerSections = [
 ];
 
 export const headerTitle = "Indian Speech Communication Association";
+
+export const headerTag = "IndSCA";

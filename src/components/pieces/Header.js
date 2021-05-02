@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Toolbar, Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	toolbar: {
@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props) => {
 	const classes = useStyles();
-	const { sections, title } = props;
+	const { sections, title, tag } = props;
 	// const [user] = useAuthState(auth());
 
 	return (
 		<>
 			<Toolbar className={classes.toolbar}>
 				<Link className={classes.toolbarSecondary} to="/">
-					<Button size="small">IndSCA</Button>
+					<Button size="small">{tag}</Button>
 				</Link>
 				<Typography
 					component="h2"
