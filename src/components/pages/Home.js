@@ -1,12 +1,17 @@
 import React from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { mainFeaturedPostQuery } from "../../firebase/firestore";
+import {
+	mainFeaturedPostQuery,
+	featuredPostQuery,
+} from "../../firebase/firestore";
 
 import MainFeaturedPost from "../pieces/MainFeaturedPost";
+import FeaturedPosts from "../pieces/FeaturedPosts";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
 // import Grid from "@material-ui/core/Grid";
 // import FacebookIcon from "@material-ui/icons/Facebook";
 // import TwitterIcon from "@material-ui/icons/Twitter";
@@ -32,17 +37,22 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
 	const classes = useStyles();
 	const [mainFeaturedPost] = useCollectionData(mainFeaturedPostQuery);
+	const [featuredPosts] = useCollectionData(featuredPostQuery);
 	return (
 		<div>
 			{mainFeaturedPost && (
 				<MainFeaturedPost post={mainFeaturedPost[0]} />
 			)}
-			{/* <Grid container spacing={4}>
-				{featuredPosts.map((post) => (
-					<FeaturedPost key={post.title} post={post} />
-				))}
-			</Grid>
-			<Grid container spacing={5} className={classes.mainGrid}>
+			{featuredPosts && (
+				<Grid container spacing={4}>
+					{featuredPosts.map((post) => (
+						<Grid item xs={12} md={6}>
+							<FeaturedPosts key={post.title} post={post} />
+						</Grid>
+					))}
+				</Grid>
+			)}
+			{/* <Grid container spacing={5} className={classes.mainGrid}>
 				<Main title="Events" posts={postsImp} />
 				<Sidebar
 					title={sidebar.title}
