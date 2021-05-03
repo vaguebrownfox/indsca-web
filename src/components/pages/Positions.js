@@ -11,16 +11,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-	},
 	paper: {
-		backgroundColor: theme.palette.grey[200],
 		height: "100%",
 		minHeight: "70vh",
-		padding: theme.spacing(4),
-		margin: theme.spacing(4),
-		color: theme.palette.text.secondary,
+		margin: theme.spacing(1),
 	},
 
 	cardroot: {
@@ -69,11 +63,11 @@ const Positions = () => {
 	const [positions] = useCollectionData(positionQuery);
 
 	return (
-		<div>
-			<Paper className={classes.paper}>
-				<Grid container spacing={3}>
-					{positions &&
-						positions.map((pos, i) => (
+		<div className={classes.paper}>
+			<Grid container spacing={3}>
+				{positions &&
+					positions.map((pos, i) => (
+						<Grid item lg={4} md={5} xs={12}>
 							<ProfileCard
 								key={i}
 								name={pos.name}
@@ -81,9 +75,9 @@ const Positions = () => {
 								affliation={pos.affliation}
 								imageLink={pos.imageLink}
 							/>
-						))}
-				</Grid>
-			</Paper>
+						</Grid>
+					))}
+			</Grid>
 		</div>
 	);
 };
@@ -94,53 +88,51 @@ const defaultImg =
 const ProfileCard = ({ name, position, affliation, imageLink }) => {
 	const classes = useStyles();
 	return (
-		<Grid item lg={4} md={5} xs={12}>
-			<Card className={classes.card}>
-				<Grid
-					container
-					spacing={1}
-					alignItems="center"
-					alignContent="center"
-					justify="space-around"
-				>
-					<Grid item xs={4}>
-						<Avatar
-							alt="Remy Sharp"
-							src={imageLink || defaultImg}
-							className={classes.large}
-						/>
-					</Grid>
-					<Grid item xs={8}>
-						<CardContent className={classes.content}>
+		<Card className={classes.card}>
+			<Grid
+				container
+				spacing={1}
+				alignItems="center"
+				alignContent="center"
+				justify="space-around"
+			>
+				<Grid item xs={4}>
+					<Avatar
+						alt="Remy Sharp"
+						src={imageLink || defaultImg}
+						className={classes.large}
+					/>
+				</Grid>
+				<Grid item xs={8}>
+					<CardContent className={classes.content}>
+						<Typography
+							className={classes.cardtext}
+							component="div"
+							variant="subtitle2"
+						>
+							{name}
+						</Typography>
+						<Typography
+							className={classes.cardtext}
+							component="div"
+							variant="body2"
+							color="textSecondary"
+						>
+							{position}
+						</Typography>
+						<CardActions className={classes.cardactions}>
 							<Typography
-								className={classes.cardtext}
 								component="div"
-								variant="subtitle2"
-							>
-								{name}
-							</Typography>
-							<Typography
-								className={classes.cardtext}
-								component="div"
-								variant="body2"
+								variant="caption"
 								color="textSecondary"
 							>
-								{position}
+								{affliation}
 							</Typography>
-							<CardActions className={classes.cardactions}>
-								<Typography
-									component="div"
-									variant="caption"
-									color="textSecondary"
-								>
-									{affliation}
-								</Typography>
-							</CardActions>
-						</CardContent>
-					</Grid>
+						</CardActions>
+					</CardContent>
 				</Grid>
-			</Card>
-		</Grid>
+			</Grid>
+		</Card>
 	);
 };
 

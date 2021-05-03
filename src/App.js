@@ -10,6 +10,7 @@ import Header from "./components/pieces/Header";
 import Footer from "./components/pieces/Footer";
 import About from "./components/pages/About";
 import Positions from "./components/pages/Positions";
+import Activities from "./components/pages/Activities";
 
 // UI Constants
 import {
@@ -32,6 +33,11 @@ const App = () => {
 						<Route path="/" exact component={Home} />
 						<Route path="/about" exact component={About} />
 						<Route path="/positions" exact component={Positions} />
+						<Route
+							path="/activities"
+							exact
+							component={Activities}
+						/>
 					</Switch>
 				</Container>
 				<Footer title={headerTag} description={headerTitle} />
