@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
+import emailRx from "email-regex";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { CircularProgress, Grid, IconButton } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -12,6 +13,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import CheckIcon from "@material-ui/icons/Check";
 
 import { auth, db } from "../../firebase/firebase";
 
@@ -45,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(3),
 	},
+	checkIcon: {
+		height: theme.spacing(4),
+		width: theme.spacing(4),
+	},
 	submit: {
 		marginTop: theme.spacing(4),
 	},
@@ -64,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	formControl: {
 		margin: theme.spacing(1),
+		marginBottom: theme.spacing(2),
 		minWidth: 120,
 	},
 	selectType: {},
@@ -89,7 +96,18 @@ const SignUp = () => {
 
 	return (
 		<div>
-			{recaptcha && <SignUpComponent recaptcha={recaptcha} />}
+			{recaptcha ? (
+				<SignUpComponent recaptcha={recaptcha} />
+			) : (
+				<>
+					<div>
+						<CircularProgress color="secondary" size={28} />
+					</div>
+					<Typography variant="caption">
+						Setting up authentication, please wait...
+					</Typography>
+				</>
+			)}
 			<div ref={element}></div>
 		</div>
 	);
@@ -97,6 +115,7 @@ const SignUp = () => {
 
 const SignUpComponent = ({ recaptcha }) => {
 	const [digits, setDigits] = useState("");
+	const [email, setEmail] = useState("");
 	const [invited, setInvited] = useState(false);
 	const [memberType, setMemberType] = useState("");
 	const [confirmationResult, setConfirmationResult] = useState(null);
@@ -105,9 +124,9 @@ const SignUpComponent = ({ recaptcha }) => {
 	const phoneNumber = `+91${digits}`;
 
 	useEffect(() => {
-		if (phoneNumber.length === 13) {
-			const ref = db.collection("invites").doc(phoneNumber);
-			db.collection("invites").get();
+		if (emailRx().test(email)) {
+			const ref = db.collection("invites").doc(email);
+
 			ref.get().then(({ exists }) => {
 				console.log("exists: ", exists);
 				setInvited(exists);
@@ -115,8 +134,8 @@ const SignUpComponent = ({ recaptcha }) => {
 		} else {
 			setInvited(false);
 		}
-		console.log("invite: ", phoneNumber, phoneNumber.length);
-	}, [phoneNumber]);
+		console.log("invite: ", email, invited);
+	}, [email]);
 
 	const signInWithPhoneNumber = async () => {
 		setConfirmationResult(
@@ -152,6 +171,7 @@ const SignUpComponent = ({ recaptcha }) => {
 			<Typography component="h1" variant="h5">
 				Sign In
 			</Typography>
+
 			<form
 				className={classes.form}
 				noValidate
@@ -175,25 +195,37 @@ const SignUpComponent = ({ recaptcha }) => {
 						<MenuItem value={"member"}>Member Type</MenuItem>
 					</Select>
 				</FormControl>
-				<Grid container spacing={2}>
-					<Grid item xs={12}>
+
+				<Grid container spacing={1} justify="center">
+					<Grid item xs={8}>
 						<TextField
 							required
 							fullWidth
-							id="phone"
-							label="Phone Number (+91)"
-							name="phoneNumber"
-							autoComplete="phoneNumber"
-							onChange={(e) => setDigits(e.target.value)}
+							id="email"
+							label="Email ID"
+							name="emailId"
+							autoComplete="email"
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</Grid>
+					<p
+						className={classes.info}
+						component="body2"
+						variant="body2"
+					>
+						{invited
+							? "This email ID is in invite list!"
+							: "This email ID not in the invite list"}
+					</p>
+					<Grid item xs={12}>
+						<IconButton aria-label="delete">
+							<CheckIcon
+								className={classes.checkIcon}
+								color="secondary"
+							/>
+						</IconButton>
+					</Grid>
 				</Grid>
-
-				<p className={classes.info} component="body2" variant="body2">
-					{invited
-						? "This number is in invite list!"
-						: "This number not in the invite list"}
-				</p>
 
 				{confirmationResult && (
 					<Grid container spacing={2}>
