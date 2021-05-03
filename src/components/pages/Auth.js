@@ -4,9 +4,10 @@ import { auth } from "../../firebase/firebase";
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Button, Paper } from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 
 import SignUp from "../pieces/SignUp";
+import Invite from "../pieces/Invite";
 
 const useStyles = makeStyles((theme) => ({
 	mainpaper: {
@@ -45,6 +46,10 @@ const AuthSection = () => {
 					let parsee = window.location.search;
 					const val = new URLSearchParams(parsee).get("type");
 					setType(val);
+
+					console.log(type);
+
+					window.location.href = "/auth";
 				})
 				.catch((e) => {
 					console.log("indsca email link url error", e);
@@ -53,13 +58,13 @@ const AuthSection = () => {
 		return () => {
 			console.log("auth route cleanup");
 		};
-	}, []);
+	}, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const classes = useStyles();
 	return (
 		<Paper className={classes.mainpaper}>
 			<Container component="main" maxWidth="xs">
-				{user ? "<Invite user={user} />" : <SignUp />}
+				{user ? <Invite user={user} /> : <SignUp />}
 			</Container>
 		</Paper>
 	);

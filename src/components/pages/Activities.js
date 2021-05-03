@@ -33,7 +33,14 @@ const Activities = () => {
 		<div className={classes.root}>
 			<Grid container spacing={3}>
 				{activities.map((activity, i) => (
-					<Grid key={i} item md={3} xs={12} alignItems="stretch">
+					<Grid
+						key={i}
+						item
+						sm={4}
+						xl={4}
+						xs={12}
+						alignItems="stretch"
+					>
 						<Button
 							className={classes.button}
 							variant="contained"

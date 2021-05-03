@@ -5,6 +5,7 @@ const {
 	FEATURED_POSTS,
 	HOME_CONTENT,
 	POSITION_INFO,
+	INVITES,
 } = require("../admin/adminConstants");
 
 export const mainFeaturedPostQuery = db
@@ -25,3 +26,15 @@ export const positionQuery = db
 	.collection(POSITION_INFO)
 	.orderBy("index")
 	.startAt(0);
+
+export const invitesQuery = (id) =>
+	db.collection(INVITES).where("sender", "==", id);
+
+export const setInvite = async (name, email, id) => {
+	const inviteRef = db.collection("invites").doc(email);
+	await inviteRef.set({
+		name,
+		email,
+		sender: id,
+	});
+};
