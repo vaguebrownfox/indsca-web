@@ -2,13 +2,14 @@ import React from "react";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Grid, Tooltip } from "@material-ui/core";
+import { Paper, Tooltip } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import MailIcon from "@material-ui/icons/Mail";
+
 import { indscaAdmin } from "../constants/contacts";
 
 const useStyles = makeStyles((theme) => ({
