@@ -18,8 +18,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	bgImage: {
 		position: "absolute",
-		width: "auto",
-		height: "auto",
+		flexShrink: 0,
+		minWidth: "100%",
+		minHeight: "100%",
 	},
 	overlay: {
 		position: "absolute",

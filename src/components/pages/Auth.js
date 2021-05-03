@@ -34,7 +34,7 @@ const Auth = () => {
 			var email = window.localStorage.getItem("emailForSignIn");
 			if (!email) {
 				email = window.prompt(
-					"Please provide your email for confirmation"
+					"Seems like you are signing in from a different device or browser window; Please provide your email for confirmation"
 				);
 			}
 
