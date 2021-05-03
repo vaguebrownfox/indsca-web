@@ -82,12 +82,12 @@ const Invite = ({ user }) => {
 	};
 
 	useEffect(() => {
-		if (emailRx().test(email)) {
+		if (emailRx().test(email) && name.length > 0) {
 			name.length > 0 && setValid(true);
 		} else {
 			setValid(false);
 		}
-	}, [email]); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [email, name]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div className={classes.paper}>
@@ -158,6 +158,7 @@ const Invite = ({ user }) => {
 								autoComplete="email"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
+								error={!valid && email.length > 0}
 							/>
 						</Grid>
 					</Grid>
