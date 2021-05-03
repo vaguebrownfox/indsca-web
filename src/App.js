@@ -18,6 +18,7 @@ import {
 	headerTitle,
 	headerTag,
 } from "./components/constants/headerSections";
+import Contact from "./components/pages/Contact";
 
 const App = () => {
 	return (
@@ -38,6 +39,7 @@ const App = () => {
 							exact
 							component={Activities}
 						/>
+						<Route path="/contact" exact component={Contact} />
 					</Switch>
 				</Container>
 				<Footer title={headerTag} description={headerTitle} />
