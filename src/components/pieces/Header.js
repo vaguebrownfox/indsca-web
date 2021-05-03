@@ -56,7 +56,7 @@ const Header = (props) => {
 						{user ? "Invite" : "Sign In"}
 					</Button>
 				</Link> */}
-				<Button variant="outlined" size="small">
+				<Button variant="outlined" size="small" href={"/auth"}>
 					{"Sign In"}
 				</Button>
 			</Toolbar>

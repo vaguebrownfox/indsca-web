@@ -37,11 +37,9 @@ const useStyles = makeStyles((theme) => ({
 const Contact = () => {
 	const classes = useStyles();
 	return (
-		<div>
-			<Paper className={classes.paper}>
-				<ContactList />
-			</Paper>
-		</div>
+		<Paper className={classes.paper}>
+			<ContactList />
+		</Paper>
 	);
 };
 

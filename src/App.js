@@ -11,6 +11,8 @@ import Footer from "./components/pieces/Footer";
 import About from "./components/pages/About";
 import Positions from "./components/pages/Positions";
 import Activities from "./components/pages/Activities";
+import Contact from "./components/pages/Contact";
+import AuthSection from "./components/pages/Auth";
 
 // UI Constants
 import {
@@ -18,7 +20,6 @@ import {
 	headerTitle,
 	headerTag,
 } from "./components/constants/headerSections";
-import Contact from "./components/pages/Contact";
 
 const App = () => {
 	return (
@@ -40,6 +41,7 @@ const App = () => {
 							component={Activities}
 						/>
 						<Route path="/contact" exact component={Contact} />
+						<Route path="/auth" exact component={AuthSection} />
 					</Switch>
 				</Container>
 				<Footer title={headerTag} description={headerTitle} />
