@@ -149,6 +149,25 @@ const SignUpComponent = ({ recaptcha }) => {
 		);
 	};
 
+	const signInWithEmailID = async () => {
+		const actionCodeSettings = {
+			url: window.location.href,
+			handleCodeInApp: true,
+		};
+		let res = await auth()
+			.sendSignInLinkToEmail(email, actionCodeSettings)
+			.then(() => {
+				window.localStorage.setItem("emailForSignIn", email);
+				return true;
+			})
+			.catch((e) => {
+				console.log("indsca signup ::send link error", e);
+				return false;
+			});
+
+		console.log("result ::sign in email link", res);
+	};
+
 	// Step 3 - Verify SMS code
 	const verifyCode = async () => {
 		const result = await confirmationResult.confirm(code);
@@ -159,7 +178,7 @@ const SignUpComponent = ({ recaptcha }) => {
 		if (confirmationResult) {
 			verifyCode();
 		} else {
-			signInWithPhoneNumber();
+			signInWithEmailID();
 		}
 	};
 	const classes = useStyles();
@@ -217,14 +236,6 @@ const SignUpComponent = ({ recaptcha }) => {
 							? "This email ID is in invite list!"
 							: "This email ID not in the invite list"}
 					</p>
-					<Grid item xs={12}>
-						<IconButton aria-label="delete">
-							<CheckIcon
-								className={classes.checkIcon}
-								color="secondary"
-							/>
-						</IconButton>
-					</Grid>
 				</Grid>
 
 				{confirmationResult && (
