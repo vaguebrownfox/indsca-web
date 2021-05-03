@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Paper } from "@material-ui/core";
-
-import SignUp from "../pieces/SignUp";
-
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/firebase";
+// MUI
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { Button, Paper } from "@material-ui/core";
+
+import SignUp from "../pieces/SignUp";
 
 const useStyles = makeStyles((theme) => ({
 	mainpaper: {
@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.grey[200],
 		height: "100%",
 		minHeight: "70vh",
-		padding: theme.spacing(0),
 		margin: theme.spacing(1),
 		textAlign: "center",
 		alignItems: "center",
@@ -25,9 +24,12 @@ const useStyles = makeStyles((theme) => ({
 
 const AuthSection = () => {
 	const [user] = useAuthState(auth());
+	const [type, setType] = useState("");
 
 	useEffect(() => {
-		if (auth().isSignInWithEmailLink(window.location.href)) {
+		const url = window.location.href;
+		const isEmailLink = auth().isSignInWithEmailLink(url);
+		if (isEmailLink && !user) {
 			var email = window.localStorage.getItem("emailForSignIn");
 			if (!email) {
 				email = window.prompt(
@@ -36,9 +38,13 @@ const AuthSection = () => {
 			}
 
 			auth()
-				.signInWithEmailLink(email, window.location.href)
+				.signInWithEmailLink(email, url)
 				.then((result) => {
 					window.localStorage.removeItem("emailForSignIn");
+
+					let parsee = window.location.search;
+					const val = new URLSearchParams(parsee).get("type");
+					setType(val);
 				})
 				.catch((e) => {
 					console.log("indsca email link url error", e);

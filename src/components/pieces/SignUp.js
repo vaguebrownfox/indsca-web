@@ -3,7 +3,7 @@ import emailRx from "email-regex";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
-import { CircularProgress, Grid, IconButton } from "@material-ui/core";
+import { CircularProgress, FormHelperText, Grid } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -13,7 +13,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import CheckIcon from "@material-ui/icons/Check";
 
 import { auth, db } from "../../firebase/firebase";
 
@@ -97,7 +96,7 @@ const SignUp = () => {
 	return (
 		<div>
 			{recaptcha ? (
-				<SignUpComponent recaptcha={recaptcha} />
+				<SignUpComponent />
 			) : (
 				<>
 					<div>
@@ -113,15 +112,13 @@ const SignUp = () => {
 	);
 };
 
-const SignUpComponent = ({ recaptcha }) => {
-	const [digits, setDigits] = useState("");
+const SignUpComponent = () => {
+	const classes = useStyles();
+
 	const [email, setEmail] = useState("");
 	const [invited, setInvited] = useState(false);
+	const [linkSent, setLinkSent] = useState(false);
 	const [memberType, setMemberType] = useState("");
-	const [confirmationResult, setConfirmationResult] = useState(null);
-	const [code, setCode] = useState("");
-
-	const phoneNumber = `+91${digits}`;
 
 	useEffect(() => {
 		if (emailRx().test(email)) {
@@ -134,54 +131,29 @@ const SignUpComponent = ({ recaptcha }) => {
 		} else {
 			setInvited(false);
 		}
-		console.log("invite: ", email, invited);
 	}, [email]);
-
-	const signInWithPhoneNumber = async () => {
-		setConfirmationResult(
-			await auth()
-				.signInWithPhoneNumber(phoneNumber, recaptcha)
-				.catch((error) => {
-					console.log("auth error: ", error);
-					alert(error.message);
-					return false;
-				})
-		);
-	};
 
 	const signInWithEmailID = async () => {
 		const actionCodeSettings = {
-			url: window.location.href,
+			url: `${window.location.href}?type=${memberType}`,
 			handleCodeInApp: true,
 		};
-		let res = await auth()
+		await auth()
 			.sendSignInLinkToEmail(email, actionCodeSettings)
 			.then(() => {
 				window.localStorage.setItem("emailForSignIn", email);
-				return true;
+				setLinkSent(true);
 			})
 			.catch((e) => {
 				console.log("indsca signup ::send link error", e);
 				return false;
 			});
-
-		console.log("result ::sign in email link", res);
-	};
-
-	// Step 3 - Verify SMS code
-	const verifyCode = async () => {
-		const result = await confirmationResult.confirm(code);
-		console.log(result.user);
 	};
 
 	const submitHelper = () => {
-		if (confirmationResult) {
-			verifyCode();
-		} else {
-			signInWithEmailID();
-		}
+		signInWithEmailID();
 	};
-	const classes = useStyles();
+
 	return (
 		<div className={classes.paper}>
 			<Avatar className={classes.avatar}>
@@ -224,35 +196,19 @@ const SignUpComponent = ({ recaptcha }) => {
 							label="Email ID"
 							name="emailId"
 							autoComplete="email"
+							error={!invited && email.length > 0}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</Grid>
-					<p
-						className={classes.info}
-						component="body2"
-						variant="body2"
-					>
-						{invited
-							? "This email ID is in invite list!"
-							: "This email ID not in the invite list"}
-					</p>
+					<FormHelperText error={!invited && email.length > 0}>
+						{email.length > 0
+							? invited
+								? "This email ID is in invite list!"
+								: "This email ID not in the invite list"
+							: "Enter the email you've been invited with..."}
+					</FormHelperText>
 				</Grid>
 
-				{confirmationResult && (
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								required
-								fullWidth
-								id="confirmCode"
-								label="Verify Code"
-								name="confirmCode"
-								autoComplete="confirmCode"
-								onChange={(e) => setCode(e.target.value)}
-							/>
-						</Grid>
-					</Grid>
-				)}
 				<Button
 					type="submit"
 					fullWidth
@@ -260,8 +216,9 @@ const SignUpComponent = ({ recaptcha }) => {
 					color="primary"
 					className={classes.submit}
 					onClick={submitHelper}
+					disabled={!invited || linkSent}
 				>
-					{!confirmationResult ? "Sign Up" : "Verify"}
+					{!linkSent ? "Sign Up" : "Check your inbox!"}
 				</Button>
 			</form>
 		</div>

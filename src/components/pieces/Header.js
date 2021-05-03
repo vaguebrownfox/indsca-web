@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/firebase";
+
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Toolbar, Typography } from "@material-ui/core";
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
 	const classes = useStyles();
 	const { sections, title, tag } = props;
-	// const [user] = useAuthState(auth());
+	const [user] = useAuthState(auth());
 
 	return (
 		<>
@@ -51,14 +54,11 @@ const Header = (props) => {
 				>
 					{title}
 				</Typography>
-				{/* <Link className={classes.links} to="/signup">
+				<Link className={classes.links} to="/auth">
 					<Button variant="outlined" size="small">
 						{user ? "Invite" : "Sign In"}
 					</Button>
-				</Link> */}
-				<Button variant="outlined" size="small" href={"/auth"}>
-					{"Sign In"}
-				</Button>
+				</Link>
 			</Toolbar>
 			<Toolbar
 				component="nav"
