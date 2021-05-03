@@ -37,7 +37,7 @@ function Sidebar(props) {
 	const { archives, social } = props;
 
 	return (
-		<Grid item xs={12} md={4}>
+		<>
 			<TwitterHandle />
 			<Typography
 				variant="h6"
@@ -88,7 +88,7 @@ function Sidebar(props) {
 					</Link>
 				))}
 			</div>
-		</Grid>
+		</>
 	);
 }
 

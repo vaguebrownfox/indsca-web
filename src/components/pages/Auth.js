@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const AuthSection = () => {
+const Auth = () => {
 	const [user] = useAuthState(auth());
 	const [type, setType] = useState("");
 
@@ -70,4 +70,4 @@ const AuthSection = () => {
 	);
 };
 
-export default AuthSection;
+export default Auth;
