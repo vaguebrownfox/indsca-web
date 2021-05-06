@@ -36,7 +36,16 @@ const App = () => {
 					/>
 					<Suspense
 						fallback={
-							<CircularProgress color="secondary" size={28} />
+							<div
+								style={{
+									minHeight: "70vh",
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}
+							>
+								<CircularProgress color="secondary" size={28} />
+							</div>
 						}
 					>
 						<Switch>

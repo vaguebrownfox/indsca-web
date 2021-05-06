@@ -30,12 +30,9 @@ const Content = (props) => {
 					})
 			)
 		).then((members) => {
-			console.log("promise", members);
 			setPosts(members);
 		});
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-	console.log("Main.js", posts);
 
 	return (
 		<>

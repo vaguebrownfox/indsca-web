@@ -67,9 +67,8 @@ const Positions = () => {
 			<Grid container spacing={3}>
 				{positions &&
 					positions.map((pos, i) => (
-						<Grid item lg={4} md={5} xs={12}>
+						<Grid key={i} item lg={4} md={5} xs={12}>
 							<ProfileCard
-								key={i}
 								name={pos.name}
 								position={pos.position}
 								affliation={pos.affliation}
