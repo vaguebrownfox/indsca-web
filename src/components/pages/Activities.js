@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		height: "100%",
 		minHeight: "70vh",
-		margin: theme.spacing(1),
+		margin: theme.spacing(2),
 	},
 	button: {
 		minHeight: 100,
@@ -33,14 +33,7 @@ const Activities = () => {
 		<div className={classes.root}>
 			<Grid container spacing={3}>
 				{activities.map((activity, i) => (
-					<Grid
-						key={i}
-						item
-						sm={4}
-						xl={4}
-						xs={12}
-						alignItems="stretch"
-					>
+					<Grid key={i} item xs={12} sm={6} md={4}>
 						<Button
 							className={classes.button}
 							variant="contained"

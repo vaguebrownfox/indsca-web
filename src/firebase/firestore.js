@@ -32,9 +32,43 @@ export const invitesQuery = (id) =>
 
 export const setInvite = async (name, email, id) => {
 	const inviteRef = db.collection("invites").doc(email);
-	await inviteRef.set({
-		name,
-		email,
-		sender: id,
-	});
+	await inviteRef
+		.set({
+			name,
+			email,
+			sender: id,
+		})
+		.catch((e) => {
+			console.log("firestore ::set invite error", e);
+		});
+};
+
+export const addMember = async (type, name, email, sheetId, sheetUrl) => {
+	const memberRef = db.collection("members").doc(email);
+	await memberRef
+		.set({
+			name,
+			email,
+			type,
+			sheetId,
+			sheetUrl,
+		})
+		.catch((e) => {
+			console.log("firestore ::add member error", e);
+		});
+};
+
+export const getMember = async (email) => {
+	const memberRef = db.collection("members").doc(email);
+	const res = await memberRef
+		.get()
+		.then((snap) => {
+			return snap;
+		})
+		.catch((e) => {
+			console.log("firestore ::get member error", e);
+			return null;
+		});
+
+	return res;
 };

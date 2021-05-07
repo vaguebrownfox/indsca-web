@@ -8,7 +8,7 @@ import { INVITE_LIMIT } from "../../admin/adminConstants";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -97,7 +97,7 @@ const Invite = ({ user }) => {
 			<Typography component="h1" variant="h5">
 				Invite
 			</Typography>
-			<Typography variant="body">{`Logged in with ${user.email}`}</Typography>
+			<Typography variant="body1">{`Logged in with ${user.email}`}</Typography>
 
 			<div className={classes.list}>
 				<Typography
@@ -129,7 +129,7 @@ const Invite = ({ user }) => {
 
 			<Divider />
 
-			{invites?.length < INVITE_LIMIT && (
+			{invites?.length < INVITE_LIMIT ? (
 				<form
 					className={classes.form}
 					noValidate
@@ -175,6 +175,8 @@ const Invite = ({ user }) => {
 						Invite
 					</Button>
 				</form>
+			) : (
+				<CircularProgress color="secondary" size={28} />
 			)}
 			<Button fullWidth color="primary" variant="contained" href="/join">
 				Join IndSCA
