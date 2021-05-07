@@ -175,6 +175,15 @@ const Invite = ({ user }) => {
 						Invite
 					</Button>
 					<Button
+						fullWidth
+						color="primary"
+						variant="contained"
+						href="/join"
+					>
+						Join IndSCA
+					</Button>
+					<Divider />
+					<Button
 						className={classes.submit}
 						fullWidth
 						variant="outlined"

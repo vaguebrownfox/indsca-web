@@ -22,6 +22,7 @@ const About = lazy(() => import("./components/pages/About"));
 const Positions = lazy(() => import("./components/pages/Positions"));
 const Activities = lazy(() => import("./components/pages/Activities"));
 const Contact = lazy(() => import("./components/pages/Contact"));
+const Join = lazy(() => import("./components/pages/Join"));
 const Auth = lazy(() => import("./components/pages/Auth"));
 
 const App = () => {
@@ -61,6 +62,7 @@ const App = () => {
 								exact
 								component={Activities}
 							/>
+							<Route path="/join" exact component={Join} />
 							<Route path="/contact" exact component={Contact} />
 							<Route path="/auth" exact component={Auth} />
 						</Switch>
