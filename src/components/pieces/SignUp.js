@@ -9,10 +9,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 
 import { auth, db } from "../../firebase/firebase";
 
@@ -67,12 +63,7 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.error,
 		fontSize: "0.77em",
 	},
-	formControl: {
-		margin: theme.spacing(1),
-		marginBottom: theme.spacing(2),
-		minWidth: 120,
-	},
-	selectType: {},
+
 	menuPaper: {
 		minHeight: 120,
 		opacity: 0,
@@ -118,7 +109,6 @@ const SignUpComponent = () => {
 	const [email, setEmail] = useState("");
 	const [invited, setInvited] = useState(false);
 	const [linkSent, setLinkSent] = useState(false);
-	const [memberType, setMemberType] = useState("");
 
 	useEffect(() => {
 		if (emailRx().test(email)) {
@@ -135,7 +125,7 @@ const SignUpComponent = () => {
 
 	const signInWithEmailID = async () => {
 		const actionCodeSettings = {
-			url: `${window.location.href}?type=${memberType}`,
+			url: `${window.location.href}`,
 			handleCodeInApp: true,
 		};
 		await auth()
@@ -168,25 +158,6 @@ const SignUpComponent = () => {
 				noValidate
 				onSubmit={(e) => e.preventDefault()}
 			>
-				<FormControl className={classes.formControl}>
-					<InputLabel id="select-label">Member Type</InputLabel>
-					<Select
-						variant="standard"
-						labelId="select-label"
-						id="select"
-						value={memberType}
-						onChange={(e) => setMemberType(e.target.value)}
-						MenuProps={{ classes: { paper: classes.menuPaper } }}
-						className={classes.selectType}
-					>
-						<MenuItem value="">
-							<em>Select</em>
-						</MenuItem>
-						<MenuItem value={"professor"}>Professor</MenuItem>
-						<MenuItem value={"member"}>Member Type</MenuItem>
-					</Select>
-				</FormControl>
-
 				<Grid container spacing={1} justify="center">
 					<Grid item xs={8}>
 						<TextField

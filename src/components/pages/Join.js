@@ -2,7 +2,10 @@ import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/firebase";
 
+// MUI
 import { makeStyles } from "@material-ui/core/styles";
+import JoinAuth from "../pieces/JoinAuth";
+import JoinNotAuth from "../pieces/JoinNotAuth";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -21,25 +24,9 @@ const Join = () => {
 
 	return (
 		<div className={classes.paper}>
-			{user ? <JoinAuth /> : <JoinNotAuth />}
+			{user ? <JoinAuth email={user.email} /> : <JoinNotAuth />}
 		</div>
 	);
 };
 
 export default Join;
-
-const JoinAuth = () => {
-	return (
-		<div>
-			<p>"logged in, join IndSCA"</p>
-		</div>
-	);
-};
-
-const JoinNotAuth = () => {
-	return (
-		<div>
-			<p>"not logged in"</p>
-		</div>
-	);
-};

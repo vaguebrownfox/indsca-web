@@ -64,7 +64,7 @@ const Home = () => {
 			{featuredPosts && (
 				<Grid container spacing={4}>
 					{featuredPosts.map((post, i) => (
-						<Grid key={i} item xs={12} sm={6}>
+						<Grid key={i} item xs={12} sm={6} md={4}>
 							<FeaturedPosts post={post} />
 						</Grid>
 					))}
