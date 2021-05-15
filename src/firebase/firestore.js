@@ -5,7 +5,10 @@ const {
 	FEATURED_POSTS,
 	HOME_CONTENT,
 	POSITION_INFO,
+	MEMBERS,
 	INVITES,
+	GET_INVITES,
+	LINKS,
 } = require("../admin/adminConstants");
 
 export const mainFeaturedPostQuery = db
@@ -30,8 +33,13 @@ export const positionQuery = db
 export const invitesQuery = (id) =>
 	db.collection(INVITES).where("sender", "==", id);
 
+export const linkQuery = (id) =>
+	db.collection(MEMBERS).doc(id).collection(LINKS).orderBy("type").startAt(0);
+
+export const getInviteRef = (email) => db.collection(INVITES).doc(email);
+
 export const setInvite = async (name, email, id) => {
-	const inviteRef = db.collection("invites").doc(email);
+	const inviteRef = db.collection(INVITES).doc(email);
 	await inviteRef
 		.set({
 			name,
@@ -43,8 +51,40 @@ export const setInvite = async (name, email, id) => {
 		});
 };
 
+export const setGetInvite = async (name, email) => {
+	const getInviteRef = db.collection(GET_INVITES).doc(email);
+	await getInviteRef
+		.set({
+			name,
+			email,
+		})
+		.catch((e) => {
+			console.log("firestore ::set get invite error", e);
+		});
+};
+
+export const setLinks = async (id, type, link) => {
+	const linkRef = db.collection(MEMBERS).doc(id).collection(LINKS).doc();
+	await linkRef
+		.set({
+			id: linkRef.id,
+			type,
+			link,
+		})
+		.catch((e) => {
+			console.log("firestore ::set invite error", e);
+		});
+};
+
+export const removeLink = async (id, docId) => {
+	const linkRef = db.collection(MEMBERS).doc(id).collection(LINKS).doc(docId);
+	await linkRef.delete().catch((e) => {
+		console.log("firestore ::set invite error", e);
+	});
+};
+
 export const addMember = async (type, name, email, sheetId, sheetUrl) => {
-	const memberRef = db.collection("members").doc(email);
+	const memberRef = db.collection(MEMBERS).doc(email);
 	await memberRef
 		.set({
 			name,

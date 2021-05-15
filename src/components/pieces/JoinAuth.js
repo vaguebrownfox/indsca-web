@@ -14,6 +14,7 @@ import {
 	Typography,
 } from "@material-ui/core";
 import { addMember, getMember } from "../../firebase/firestore";
+import LinkList from "./LinkList";
 
 const memberTypes = [
 	{
@@ -23,14 +24,13 @@ const memberTypes = [
 ];
 const useStyles = makeStyles((theme) => ({
 	root: {
-		//
+		// maxWidth: theme.spacing(32),
 	},
 	form: {
 		width: "100%", // Fix IE 11 issue.
 	},
 	formControl: {
 		marginTop: theme.spacing(4),
-		marginBottom: theme.spacing(2),
 		width: "100%",
 		minWidth: theme.spacing(32),
 	},
@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-		margin: theme.spacing(4, 0, 2),
 	},
 	submit: {
 		margin: theme.spacing(2, 0, 2),
@@ -181,24 +180,14 @@ const JoinAuth = ({ email }) => {
 						disabled
 					/>
 				</div>
+
 				<FormHelperText className={classes.msg} component="div">
 					{msg}
 				</FormHelperText>
 				<div className={classes.buttons}>
 					{wait && <CircularProgress color="secondary" size={28} />}
 
-					{sheetUrl ? (
-						<Button
-							className={classes.link}
-							color="primary"
-							variant="outlined"
-							size="small"
-							href={sheetUrl}
-							target="_blank"
-						>
-							Go to your google sheet link
-						</Button>
-					) : (
+					{!sheetUrl && (
 						<Button
 							className={classes.submit}
 							type="submit"
@@ -213,6 +202,23 @@ const JoinAuth = ({ email }) => {
 					)}
 				</div>
 			</form>
+
+			{sheetUrl && (
+				<>
+					<LinkList id={email} />
+					<Divider />
+					<Button
+						className={classes.link}
+						color="primary"
+						variant="outlined"
+						size="small"
+						href={sheetUrl}
+						target="_blank"
+					>
+						Go to your google sheet link
+					</Button>
+				</>
+			)}
 		</div>
 	);
 };

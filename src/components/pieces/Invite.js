@@ -116,7 +116,8 @@ const Invite = ({ user }) => {
 										<DraftsIcon />
 									</ListItemIcon>
 									<ListItemText
-										primary={`${item?.name} : ${item?.email}`}
+										primary={`${item?.name}`}
+										secondary={`${item?.email}`}
 									/>
 								</ListItem>
 							))

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import emailRx from "email-regex";
+import { signInWithEmailID, getVerifier } from "../../firebase/auth";
+import { getInviteRef, setGetInvite } from "../../firebase/firestore";
 
 // MUI
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,8 +11,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-
-import { auth, db } from "../../firebase/firebase";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -39,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.secondary.main,
 	},
 	form: {
+		display: "flex",
+		flexDirection: "column",
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(3),
 	},
@@ -48,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	submit: {
 		marginTop: theme.spacing(4),
+		marginBottom: theme.spacing(2),
+	},
+	getinvite: {
+		marginTop: theme.spacing(2),
 		marginBottom: theme.spacing(2),
 	},
 	links: {
@@ -69,17 +75,19 @@ const useStyles = makeStyles((theme) => ({
 		minHeight: 120,
 		opacity: 0,
 	},
+	divider: {
+		marginTop: theme.spacing(2),
+		marginBottom: theme.spacing(1),
+	},
 }));
 
 const SignUp = () => {
-	const [recaptcha, setRecaptcha] = useState(null);
+	const [recaptcha, setRecaptcha] = useState();
 	const element = useRef(null);
 
 	useEffect(() => {
 		if (!recaptcha) {
-			const verifier = new auth.RecaptchaVerifier(element.current, {
-				size: "invisible",
-			});
+			const verifier = getVerifier(element.current);
 
 			verifier.verify().then(() => setRecaptcha(verifier));
 		}
@@ -108,14 +116,16 @@ const SignUpComponent = () => {
 	const classes = useStyles();
 
 	const [email, setEmail] = useState("");
+	const [name, setName] = useState("");
 	const [invited, setInvited] = useState(false);
+	const [getInvited, setGetInvited] = useState(false);
 	const [linkSent, setLinkSent] = useState(false);
 
 	useEffect(() => {
 		if (emailRx().test(email)) {
-			const ref = db.collection("invites").doc(email);
+			const inviteRef = getInviteRef(email);
 
-			ref.get().then(({ exists }) => {
+			inviteRef.get().then(({ exists }) => {
 				console.log("exists: ", exists);
 				setInvited(exists);
 			});
@@ -124,25 +134,14 @@ const SignUpComponent = () => {
 		}
 	}, [email]);
 
-	const signInWithEmailID = async () => {
-		const actionCodeSettings = {
-			url: `${window.location.href}`,
-			handleCodeInApp: true,
-		};
-		await auth()
-			.sendSignInLinkToEmail(email, actionCodeSettings)
-			.then(() => {
-				window.localStorage.setItem("emailForSignIn", email);
-				setLinkSent(true);
-			})
-			.catch((e) => {
-				console.log("indsca signup ::send link error", e);
-				return false;
-			});
+	const submitHelper = () => {
+		signInWithEmailID(email).then((res) => {
+			setLinkSent(res);
+		});
 	};
 
-	const submitHelper = () => {
-		signInWithEmailID();
+	const handleGetInvite = () => {
+		setGetInvite(name, email).then(() => setGetInvited(true));
 	};
 
 	return (
@@ -168,6 +167,7 @@ const SignUpComponent = () => {
 							label="Email ID"
 							name="emailId"
 							autoComplete="email"
+							value={email}
 							error={!invited && email.length > 0}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
@@ -176,11 +176,49 @@ const SignUpComponent = () => {
 						{email.length > 0
 							? invited
 								? "This email ID is in invite list!"
-								: "This email ID not in the invite list"
+								: "This email ID not in the invite list, get invited!"
 							: "Enter the email you've been invited with..."}
 					</FormHelperText>
 				</Grid>
 
+				{!invited && emailRx().test(email) && (
+					<>
+						<Grid
+							className={classes.divider}
+							container
+							spacing={1}
+							justify="center"
+						>
+							<Grid item xs={8}>
+								<TextField
+									required
+									fullWidth
+									id="name"
+									label="Name"
+									name="name"
+									autoComplete="name"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+								/>
+							</Grid>
+						</Grid>
+						<Button
+							variant="contained"
+							color="secondary"
+							className={classes.getinvite}
+							onClick={handleGetInvite}
+							disabled={getInvited}
+						>
+							Get Invited
+						</Button>
+						{getInvited && (
+							<Typography variant="caption" gutterBottom>
+								You will soon receive an email from IndSCA to{" "}
+								<b>{email}</b>
+							</Typography>
+						)}
+					</>
+				)}
 				<Button
 					type="submit"
 					fullWidth
@@ -192,10 +230,12 @@ const SignUpComponent = () => {
 				>
 					{!linkSent ? "Sign Up" : "Check your inbox!"}
 				</Button>
-				<Typography
-					variant="caption"
-					gutterBottom
-				>{`You'll receive an email to ${email}, follow the link to finish signing up!`}</Typography>
+				{linkSent && (
+					<Typography variant="caption" gutterBottom>
+						You'll receive an email to <b>{email}</b>, follow the
+						link to finish signing up!
+					</Typography>
+				)}
 			</form>
 		</div>
 	);

@@ -9,6 +9,9 @@ exports.FEATURED_POSTS = "featuredPosts";
 exports.HOME_CONTENT = "homeContent";
 exports.POSITION_INFO = "positionInfo";
 exports.INVITES = "invites";
+exports.GET_INVITES = "giveInvites";
+exports.MEMBERS = "members";
+exports.LINKS = "links";
 
 //// doc
 exports.MFP_DOC = "default";
