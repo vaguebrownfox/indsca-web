@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	submit: {
 		marginTop: theme.spacing(4),
+		marginBottom: theme.spacing(2),
 	},
 	links: {
 		"&:focus, &:visited, &:link, &:active": {
@@ -191,6 +192,10 @@ const SignUpComponent = () => {
 				>
 					{!linkSent ? "Sign Up" : "Check your inbox!"}
 				</Button>
+				<Typography
+					variant="caption"
+					gutterBottom
+				>{`You'll receive an email to ${email}, follow the link to finish signing up!`}</Typography>
 			</form>
 		</div>
 	);

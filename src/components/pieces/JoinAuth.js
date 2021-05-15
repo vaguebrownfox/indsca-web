@@ -70,23 +70,42 @@ const JoinAuth = ({ email }) => {
 			return;
 		}
 		setWait(true);
-		axios({
-			method: "post",
-			url: "http://localhost:5001/indsca-prod/us-central1/api/folder",
-			data: {
-				folderName: name,
-				email: email,
-			},
-		}).then((res) => {
-			const sheetId = res.data.sheetId;
-			const sheetUrl = res.data.sheetUrl;
 
-			setSheetUrl(res.data.sheetUrl);
+		if (
+			window.location.hostname === "localhost" ||
+			window.location.hostname === "127.0.0.1"
+		) {
+			axios({
+				method: "post",
+				url: "http://localhost:5001/indsca-prod/us-central1/api/folder",
+				data: {
+					folderName: name,
+					email: email,
+				},
+			})
+				.then((res) => {
+					const sheetId = res.data.sheetId;
+					const sheetUrl = res.data.sheetUrl;
 
-			addMember(memberType, name, email, sheetId, sheetUrl).then(() =>
-				setWait(false)
+					setSheetUrl(res.data.sheetUrl);
+
+					addMember(memberType, name, email, sheetId, sheetUrl).then(
+						() => setWait(false)
+					);
+				})
+				.catch((e) => {
+					alert("check if local cloud function server is active");
+					console.log(e);
+				})
+				.finally(() => {
+					setWait(false);
+				});
+		} else {
+			alert(
+				"cloud running on free tier, cannot use the function yet. Sorry!"
 			);
-		});
+			setWait(false);
+		}
 	};
 
 	useEffect(() => {
@@ -106,7 +125,9 @@ const JoinAuth = ({ email }) => {
 	return (
 		<div className={classes.root}>
 			<Typography component="h1" variant="h5" gutterBottom>
-				Become an IndSCA member
+				{sheetUrl
+					? `You are an IndSCA Member!`
+					: `Become an IndSCA member`}
 			</Typography>
 
 			<Divider />
