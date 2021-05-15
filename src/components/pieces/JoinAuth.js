@@ -206,7 +206,6 @@ const JoinAuth = ({ email }) => {
 			{sheetUrl && (
 				<>
 					<LinkList id={email} />
-					<Divider />
 					<Button
 						className={classes.link}
 						color="primary"
@@ -215,7 +214,7 @@ const JoinAuth = ({ email }) => {
 						href={sheetUrl}
 						target="_blank"
 					>
-						Go to your google sheet link
+						Go to your google sheet
 					</Button>
 				</>
 			)}
