@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	chips: {
 		margin: 4,
+		maxWidth: theme.spacing(24),
 	},
 }));
 
