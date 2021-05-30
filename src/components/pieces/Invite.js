@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	form: {
 		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(3),
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2),
@@ -97,7 +96,9 @@ const Invite = ({ user }) => {
 			<Typography component="h1" variant="h5">
 				Invite
 			</Typography>
-			<Typography variant="body1">{`Logged in with ${user.email}`}</Typography>
+			<Typography variant="body1">
+				Logged in with <b>{user.email}</b>
+			</Typography>
 
 			<div className={classes.list}>
 				<Typography
@@ -122,13 +123,18 @@ const Invite = ({ user }) => {
 								</ListItem>
 							))
 						) : (
-							<Typography variant="caption">{`*Nobody*`}</Typography>
+							<Typography variant="caption">{`*You haven't invited anyone yet*`}</Typography>
 						)}
 					</List>
 				)}
 			</div>
 
 			<Divider />
+
+			<Typography variant="body1">
+				Enter <b>Name</b> and <b>Email-ID</b> of the member you wish to
+				invite.
+			</Typography>
 
 			{invites?.length < INVITE_LIMIT ? (
 				<form

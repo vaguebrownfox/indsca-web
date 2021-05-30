@@ -117,6 +117,7 @@ const SignUpComponent = () => {
 
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
+	const [organisation, setOrganisation] = useState("");
 	const [invited, setInvited] = useState(false);
 	const [getInvited, setGetInvited] = useState(false);
 	const [linkSent, setLinkSent] = useState(false);
@@ -141,7 +142,10 @@ const SignUpComponent = () => {
 	};
 
 	const handleGetInvite = () => {
-		setGetInvite(name, email).then(() => setGetInvited(true));
+		if (name.length > 0 && organisation.length > 0)
+			setGetInvite(name, email, organisation).then(() =>
+				setGetInvited(true)
+			);
 	};
 
 	return (
@@ -201,6 +205,20 @@ const SignUpComponent = () => {
 									onChange={(e) => setName(e.target.value)}
 								/>
 							</Grid>
+							<Grid item xs={8}>
+								<TextField
+									required
+									fullWidth
+									id="organisation"
+									label="Organisation"
+									name="organisation"
+									autoComplete="organisation"
+									value={organisation}
+									onChange={(e) =>
+										setOrganisation(e.target.value)
+									}
+								/>
+							</Grid>
 						</Grid>
 						<Button
 							variant="contained"
@@ -213,8 +231,8 @@ const SignUpComponent = () => {
 						</Button>
 						{getInvited && (
 							<Typography variant="caption" gutterBottom>
-								You will soon receive an email from IndSCA to{" "}
-								<b>{email}</b>
+								You will receive an email from IndSCA to{" "}
+								<b>{email}</b> <br /> Please wait...
 							</Typography>
 						)}
 					</>

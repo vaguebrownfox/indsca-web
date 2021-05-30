@@ -29,3 +29,4 @@ firebaseAdminConfig.json
 # hosting
 .firebaserc
 firebase-debug.log
+.firebase/hosting.YnVpbGQ.cache

@@ -51,12 +51,13 @@ export const setInvite = async (name, email, id) => {
 		});
 };
 
-export const setGetInvite = async (name, email) => {
+export const setGetInvite = async (name, email, organisation) => {
 	const getInviteRef = db.collection(GET_INVITES).doc(email);
 	await getInviteRef
 		.set({
 			name,
 			email,
+			organisation,
 		})
 		.catch((e) => {
 			console.log("firestore ::set get invite error", e);
