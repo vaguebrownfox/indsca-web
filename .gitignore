@@ -25,9 +25,9 @@ yarn-error.log*
 # admin
 firebaseConfig.js
 firebaseAdminConfig.json
+adminConstants.js
 
 # hosting
 .firebaserc
 firebase-debug.log
 .firebase/hosting.YnVpbGQ.cache
-adminConstants.js
