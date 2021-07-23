@@ -38,6 +38,9 @@ export const allMembersQuery = db
 	.collection(ESTEEMED_MEMBERS)
 	.where("type", "!=", "NA");
 
+export const memberQuery = (id) =>
+	db.collection(ESTEEMED_MEMBERS).where("sheetId", "==", id);
+
 export const linkQuery = (id) =>
 	db.collection(MEMBERS).doc(id).collection(LINKS).orderBy("type").startAt(0);
 
