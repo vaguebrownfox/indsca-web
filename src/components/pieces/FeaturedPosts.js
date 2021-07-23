@@ -16,10 +16,8 @@ import {
 	GridList,
 	GridListTile,
 	GridListTileBar,
-	IconButton,
 	Modal,
 } from "@material-ui/core";
-import DownloadIcon from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
