@@ -9,6 +9,7 @@ const {
 	INVITES,
 	GET_INVITES,
 	LINKS,
+	ESTEEMED_MEMBERS,
 } = require("../admin/adminConstants");
 
 export const mainFeaturedPostQuery = db
@@ -32,6 +33,10 @@ export const positionQuery = db
 
 export const invitesQuery = (id) =>
 	db.collection(INVITES).where("sender", "==", id);
+
+export const allMembersQuery = db
+	.collection(ESTEEMED_MEMBERS)
+	.where("type", "!=", "NA");
 
 export const linkQuery = (id) =>
 	db.collection(MEMBERS).doc(id).collection(LINKS).orderBy("type").startAt(0);
