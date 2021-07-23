@@ -30,3 +30,4 @@ firebaseAdminConfig.json
 .firebaserc
 firebase-debug.log
 .firebase/hosting.YnVpbGQ.cache
+adminConstants.js
