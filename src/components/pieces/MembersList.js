@@ -7,12 +7,17 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
-import { allMembersQuery } from "../../firebase/firestore";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Hidden } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 const useStyles = makeStyles((theme) => ({
+	listSection: {
+		display: "flex",
+		justifyContent: "space-between",
+	},
+	listDiv: {
+		flex: 1,
+	},
 	list: {
 		width: "100%",
 		height: "60vh",
@@ -30,14 +35,84 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 	},
+	divider: {
+		padding: theme.spacing(4, 0, 4, 2),
+	},
 }));
 
-function Member({ bio }) {
+export default function MembersList({
+	selectMemberHandler,
+	members,
+	fetching,
+	error,
+}) {
 	const classes = useStyles();
 
 	return (
 		<>
-			<ListItem alignItems="flex-start" button>
+			{!fetching ? (
+				<div className={classes.listSection}>
+					<div className={classes.listDiv}>
+						<Typography
+							className={classes.title}
+							variant="h6"
+							color="textSecondary"
+						>
+							Professors
+						</Typography>
+						<List className={classes.list}>
+							{members?.map((bio, i) => (
+								<Member
+									key={i}
+									{...{ bio, selectMemberHandler }}
+								/>
+							))}
+						</List>
+						<div className={classes.progress}>
+							<ArrowDropDownIcon
+								fontSize="large"
+								color="primary"
+							/>
+						</div>
+					</div>
+					<Hidden xsDown>
+						<div className={classes.divider}>
+							<Divider
+								orientation="vertical"
+								variant="fullWidth"
+							/>
+						</div>
+					</Hidden>
+				</div>
+			) : (
+				<div className={classes.progress}>
+					{!error ? (
+						<CircularProgress color="secondary" size={28} />
+					) : (
+						<Typography
+							className={classes.title}
+							variant="body1"
+							color="textPrimary"
+						>
+							Error loading members! Please refresh...
+						</Typography>
+					)}
+				</div>
+			)}
+		</>
+	);
+}
+
+const Member = ({ bio, selectMemberHandler }) => {
+	const classes = useStyles();
+
+	const selectMember = () => {
+		selectMemberHandler(bio);
+	};
+
+	return (
+		<>
+			<ListItem alignItems="flex-start" button onClick={selectMember}>
 				<ListItemAvatar>
 					<Avatar alt={bio.name} src={bio.imageLink} />
 				</ListItemAvatar>
@@ -58,48 +133,4 @@ function Member({ bio }) {
 			<Divider variant="inset" component="li" />
 		</>
 	);
-}
-
-export default function MembersList() {
-	const classes = useStyles();
-	const [members, fetching, error] = useCollectionDataOnce(allMembersQuery);
-	React.useEffect(() => {
-		console.log(
-			"memberlist: ",
-			members?.map((d, i) => ({
-				d,
-				i,
-			}))
-		);
-		console.log("memberlist fetching: ", fetching);
-		console.log("memberlist error : ", error);
-	}, [members, fetching, error]);
-
-	return (
-		<>
-			{!fetching ? (
-				<>
-					<Typography
-						className={classes.title}
-						variant="h6"
-						color="textSecondary"
-					>
-						Professors
-					</Typography>
-					<List className={classes.list}>
-						{members?.map((bio, i) => (
-							<Member key={i} {...{ bio }} />
-						))}
-					</List>
-					<div className={classes.progress}>
-						<ArrowDropDownIcon fontSize="large" />
-					</div>
-				</>
-			) : (
-				<div className={classes.progress}>
-					<CircularProgress color="secondary" size={28} />
-				</div>
-			)}
-		</>
-	);
-}
+};
