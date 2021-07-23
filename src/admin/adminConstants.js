@@ -11,6 +11,7 @@ exports.POSITION_INFO = "positionInfo";
 exports.INVITES = "invites";
 exports.GET_INVITES = "giveInvites";
 exports.MEMBERS = "members";
+exports.ESTEEMED_MEMBERS = "members_esteemed";
 exports.LINKS = "links";
 
 //// doc
