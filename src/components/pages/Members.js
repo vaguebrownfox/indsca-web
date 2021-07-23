@@ -1,48 +1,36 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 
-import Member from "./Member";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import { fade } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { Button } from "@material-ui/core";
-
-// Context
-import {
-	Provider as MemberProvider,
-	Context as MembersContext,
-} from "../../context/data/MembersContext";
+import { fade } from "@material-ui/core/styles";
+import MembersList from "../pieces/MembersList";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
+	paper: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
 		height: "100%",
-		minHeight: "70vh",
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(4),
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
+		minHeight: "60vh",
+		margin: theme.spacing(1, 0),
 	},
-	grid: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
+	progress: {
+		width: "100%",
 	},
 	search: {
 		position: "relative",
 		borderRadius: theme.shape.borderRadius,
-		backgroundColor: fade(theme.palette.common.white, 0.15),
+		backgroundColor: fade(theme.palette.grey[400], 0.15),
 		"&:hover": {
-			backgroundColor: fade(theme.palette.common.black, 0.25),
+			backgroundColor: fade(theme.palette.primary.main, 0.1),
 		},
-		marginRight: theme.spacing(2),
-		marginLeft: 0,
+		margin: theme.spacing(1, 2, 1, 0),
 		width: "100%",
 		[theme.breakpoints.up("sm")]: {
-			marginLeft: theme.spacing(3),
+			marginLeft: theme.spacing(2),
 			width: "auto",
 		},
 	},
@@ -69,37 +57,10 @@ const useStyles = makeStyles((theme) => ({
 			width: "20ch",
 		},
 	},
-	progress: {
-		width: "100%",
-		padding: theme.spacing(2),
-	},
-	addButton: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
 }));
 
-// const members = [
-// 	{
-// 		name: "Dr. First Second Last",
-// 		institution: "Indian Institute of Science",
-// 		image:
-// 			"https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg",
-// 		imageText: "Dr. First Second Last",
-// 		place: "Bangalore",
-// 	},
-// ];
-
-const MembersComponent = ({ history }) => {
+const Members = () => {
 	const classes = useStyles();
-	const { state, updateMembers } = useContext(MembersContext);
-	useEffect(() => {
-		updateMembers();
-		return () => {
-			console.log("Members cleanup");
-		};
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 	return (
 		<>
 			<div className={classes.search}>
@@ -114,35 +75,23 @@ const MembersComponent = ({ history }) => {
 					}}
 					inputProps={{ "aria-label": "search" }}
 				/>
+				<div className={classes.progress}>
+					{/* // TODO: loading state */}
+					{false && <LinearProgress variant="indeterminate" />}
+				</div>
 			</div>
-			<div className={classes.progress}>
-				{state.loading && <LinearProgress variant="indeterminate" />}
-				{/* {<CircularProgress />} */}
-			</div>
-			{/* {Auth component} */}
-			{/* <div className={classes.addButton}>
-				<Button variant="outlined" color="primary">
-					Add Member
-				</Button>
-			</div> */}
-			<div className={classes.root}>
+			<div className={classes.paper}>
 				<Grid className={classes.grid} container spacing={2}>
-					<React.Fragment>
-						{state.members.map((member, i) => (
-							<Grid key={i} item>
-								<Member {...{ member, history }} />
-							</Grid>
-						))}
-					</React.Fragment>
+					<Grid xs={12} sm={6} md={4} item>
+						<MembersList />
+					</Grid>
+					<Grid xs={12} sm={6} md={8} item>
+						<div>member's content</div>
+					</Grid>
 				</Grid>
 			</div>
 		</>
 	);
 };
-const Members = ({ history }) => (
-	<MemberProvider>
-		<MembersComponent {...{ history }} />
-	</MemberProvider>
-);
 
 export default Members;
