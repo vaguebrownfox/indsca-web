@@ -7,6 +7,10 @@ import InputBase from "@material-ui/core/InputBase";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { fade } from "@material-ui/core/styles";
 import MembersList from "../pieces/MembersList";
+import MemberContent from "../pieces/MemberContent";
+import { allMembersQuery } from "../../firebase/firestore";
+import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import { Grow, Hidden } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -61,6 +65,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Members = () => {
 	const classes = useStyles();
+	const [members, fetching, error] = useCollectionDataOnce(allMembersQuery);
+
+	const [memberBio, setMemberBio] = React.useState(null);
+
+	const selectMemberHandler = (bio) => {
+		setMemberBio(bio);
+	};
+
 	return (
 		<>
 			<div className={classes.search}>
@@ -83,11 +95,22 @@ const Members = () => {
 			<div className={classes.paper}>
 				<Grid className={classes.grid} container spacing={2}>
 					<Grid xs={12} sm={6} md={4} item>
-						<MembersList />
+						<MembersList
+							{...{
+								selectMemberHandler,
+								members,
+								fetching,
+								error,
+							}}
+						/>
 					</Grid>
-					<Grid xs={12} sm={6} md={8} item>
-						<div>member's content</div>
-					</Grid>
+					<Hidden xsDown>
+						<Grow in={memberBio ? true : false}>
+							<Grid xs={12} sm={6} md={8} item>
+								<MemberContent bio={memberBio} />
+							</Grid>
+						</Grow>
+					</Hidden>
 				</Grid>
 			</div>
 		</>
