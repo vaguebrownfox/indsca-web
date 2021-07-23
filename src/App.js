@@ -20,6 +20,7 @@ import {
 const Home = lazy(() => import("./components/pages/Home"));
 const About = lazy(() => import("./components/pages/About"));
 const Positions = lazy(() => import("./components/pages/Positions"));
+const Members = lazy(() => import("./components/pages/Members"));
 const Activities = lazy(() => import("./components/pages/Activities"));
 const Contact = lazy(() => import("./components/pages/Contact"));
 const Join = lazy(() => import("./components/pages/Join"));
@@ -57,6 +58,7 @@ const App = () => {
 								exact
 								component={Positions}
 							/>
+							<Route path="/members" exact component={Members} />
 							<Route
 								path="/activities"
 								exact
